@@ -33,7 +33,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.path.to.main.Class</mainClass>
+                            <mainClass>com.mlnotes.storm.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -54,6 +54,7 @@
             <groupId>org.apache.storm</groupId>
             <artifactId>storm-core</artifactId>
             <version>0.9.1-incubating</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency> 
