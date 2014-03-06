@@ -20,9 +20,11 @@ public class App
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("word-reader", new WordReader());
         builder.setBolt("word-spliter", new WordSpliter())
-                .shuffleGrouping("word-reader");
+                .shuffleGrouping("word-reader")
+                .setNumTasks(10);
         builder.setBolt("word-counter", new WordCounter())
-                .fieldsGrouping("word-spliter", new Fields("word"));
+                .fieldsGrouping("word-spliter", new Fields("word"))
+                .setNumTasks(20);
     
         // configuration
         Config config = new Config();
