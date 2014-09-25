@@ -13,9 +13,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class WordDictionary {
+    private static Logger LOG = LoggerFactory.getLogger(WordDictionary.class);
+    
     private static WordDictionary singleton;
     private static final String MAIN_DICT = "/dict.txt";
     private static String USER_DICT_SUFFIX = ".dict";
@@ -52,7 +56,7 @@ public class WordDictionary {
      */
     public void init(File configFile) {
         String path = configFile.getAbsolutePath();
-        System.out.println("initialize user dictionary:" + path);
+        LOG.info("initialize user dictionary:" + path);
         synchronized (WordDictionary.class) {
             if (loadedPath.contains(path))
                 return;

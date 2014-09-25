@@ -17,7 +17,7 @@ import redis.clients.jedis.Jedis;
  * @date 2014-3-5 20:45:27
  */
 public class WordReader extends BaseRichSpout{
-    private static Logger LOG = LoggerFactory.getLogger(App.class);
+    private static Logger LOG = LoggerFactory.getLogger(WordReader.class);
     
     private SpoutOutputCollector collector;
     private Jedis jedis;

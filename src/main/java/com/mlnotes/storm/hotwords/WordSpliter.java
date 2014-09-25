@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * @date 2014-3-5 20:56:26
  */
 public class WordSpliter extends BaseBasicBolt{
-   public static Logger LOG = LoggerFactory.getLogger(App.class);
+   private static Logger LOG = LoggerFactory.getLogger(WordSpliter.class);
     
     private JiebaSegmenter segmenter;
     
