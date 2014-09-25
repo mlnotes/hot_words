@@ -71,11 +71,11 @@
            <scope>compile</scope>
        </dependency>
        
-        <dependency>
+<!--        <dependency>
            <groupId>com.huaban</groupId>
            <artifactId>jieba-analysis</artifactId>
            <version>1.0.0</version>
-        </dependency>
+        </dependency>-->
        
     </dependencies>
 </project>

@@ -45,7 +45,7 @@ public class WordSpliter extends BaseBasicBolt{
         
         List<SegToken> tokens = segmenter.process(line, SegMode.INDEX);
         for(SegToken t : tokens){
-            String word = t.word.getToken();
+            String word = t.word;
             LOG.info("word: " + word);
             if(word.length() > 1){
                 collector.emit(new Values(word));
