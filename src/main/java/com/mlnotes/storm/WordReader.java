@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.mlnotes.storm;
 
 import backtype.storm.spout.SpoutOutputCollector;
@@ -14,6 +8,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import java.util.Map;
 import org.joda.time.DateTime;
+import redis.clients.jedis.Jedis;
 
 /**
  *
@@ -23,17 +18,24 @@ import org.joda.time.DateTime;
 public class WordReader extends BaseRichSpout{
 
     private SpoutOutputCollector collector;
+    private Jedis jedis;
     
+    @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("line"));
     }
 
+    @Override
     public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
         this.collector = collector;
+        this.jedis = new Jedis(Constants.REDIS_SERVER);
     }
 
+    @Override
     public void nextTuple() {
-        String time = DateTime.now().toString();
-        this.collector.emit(new Values(time));
+        String weibo = jedis.lpop(Constants.QUEUE_NAME);
+        if(weibo != null && weibo.length() > 0){
+            this.collector.emit(new Values(weibo));
+        }
     }
 }

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.mlnotes.storm;
 
 import backtype.storm.task.TopologyContext;
@@ -39,9 +33,11 @@ public class WordCounter extends BaseBasicBolt{
         }
     }
     
+    @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
     }
 
+    @Override
     public void execute(Tuple input, BasicOutputCollector collector) {
         String word = input.getString(0);
         if(coll == null){

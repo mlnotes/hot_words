@@ -1,43 +1,52 @@
 package com.mlnotes.storm;
 
 import backtype.storm.Config;
+import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.generated.AlreadyAliveException;
 import backtype.storm.generated.InvalidTopologyException;
+import backtype.storm.generated.StormTopology;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Hello world!
+ * Find the hot words in weibo
  *
  */
 public class App 
 {
+    public static Logger LOG = LoggerFactory.getLogger(App.class);
+    
+    public static void submit(String name, StormTopology topology, boolean localMode){
+        Config config = new Config();
+        if(localMode){
+            LocalCluster cluster = new LocalCluster();
+            cluster.submitTopology(name, config, topology);
+        }else{
+            config.setNumWorkers(10);
+            config.setMaxSpoutPending(5000);
+            try {
+                StormSubmitter.submitTopology(name, config, topology);
+            } catch (AlreadyAliveException | InvalidTopologyException ex) {
+                LOG.error(ex.getMessage());
+            }
+        }
+    }
+    
     public static void main( String[] args )
     {
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("word-reader", new WordReader());
+        builder.setSpout("word-reader", new WordReader())
+                .setNumTasks(10);
         builder.setBolt("word-spliter", new WordSpliter())
-                .shuffleGrouping("word-reader");
-        builder.setBolt("word-counter", new WordCounter())
-                .fieldsGrouping("word-spliter", new Fields("word"));
-    
-        // configuration
-        Config config = new Config();
-        // TODO set config
-        //LocalCluster cluster = new LocalCluster();
-            //cluster.submitTopology("word-count-topology", config, builder.createTopology());
+                .shuffleGrouping("word-reader")
+                .setNumTasks(100);
+        builder.setBolt("word-counter", new DummyWordCounter())
+                .fieldsGrouping("word-spliter", new Fields("word"))
+                .setNumTasks(100);
         
-        config.setNumWorkers(10);
-        config.setMaxSpoutPending(5000);
-        try {
-            StormSubmitter.submitTopology("word-count-topology", config, builder.createTopology());
-        } catch (AlreadyAliveException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidTopologyException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        submit("word-count-topology", builder.createTopology(), true);
     }
 }

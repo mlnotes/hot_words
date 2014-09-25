@@ -54,13 +54,27 @@
             <groupId>org.apache.storm</groupId>
             <artifactId>storm-core</artifactId>
             <version>0.9.1-incubating</version>
-            <scope>provided</scope>
+<!--            <scope>provided</scope>-->
         </dependency>
         
         <dependency> 
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>2.11.3</version>
+        </dependency>
+       
+       <dependency>
+           <groupId>redis.clients</groupId>
+           <artifactId>jedis</artifactId>
+           <version>2.6.0</version>
+           <type>jar</type>
+           <scope>compile</scope>
+       </dependency>
+       
+        <dependency>
+           <groupId>com.huaban</groupId>
+           <artifactId>jieba-analysis</artifactId>
+           <version>1.0.0</version>
         </dependency>
        
     </dependencies>
