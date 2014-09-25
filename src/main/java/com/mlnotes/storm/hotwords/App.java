@@ -19,6 +19,21 @@ public class App
 {
     public static Logger LOG = LoggerFactory.getLogger(App.class);
     
+    public static void main( String[] args )
+    {
+        TopologyBuilder builder = new TopologyBuilder();
+        builder.setSpout("word-reader", new WordReader())
+                .setNumTasks(10);
+        builder.setBolt("word-spliter", new WordSpliter())
+                .shuffleGrouping("word-reader")
+                .setNumTasks(100);
+        builder.setBolt("word-counter", new DummyWordCounter())
+                .fieldsGrouping("word-spliter", new Fields("word"))
+                .setNumTasks(100);
+        
+        submit("hot-words-topology", builder.createTopology(), true);
+    }
+    
     public static void submit(String name, StormTopology topology, boolean localMode){
         Config config = new Config();
         if(localMode){
@@ -33,20 +48,5 @@ public class App
                 LOG.error(ex.getMessage());
             }
         }
-    }
-    
-    public static void main( String[] args )
-    {
-        TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("word-reader", new WordReader())
-                .setNumTasks(10);
-        builder.setBolt("word-spliter", new WordSpliter())
-                .shuffleGrouping("word-reader")
-                .setNumTasks(100);
-        builder.setBolt("word-counter", new DummyWordCounter())
-                .fieldsGrouping("word-spliter", new Fields("word"))
-                .setNumTasks(100);
-        
-        submit("word-count-topology", builder.createTopology(), true);
     }
 }
