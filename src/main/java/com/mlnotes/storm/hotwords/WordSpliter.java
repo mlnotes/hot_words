@@ -14,6 +14,8 @@ import com.huaban.analysis.jieba.WordDictionary;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -21,6 +23,8 @@ import java.util.Map;
  * @date 2014-3-5 20:56:26
  */
 public class WordSpliter extends BaseBasicBolt{
+   public static Logger LOG = LoggerFactory.getLogger(App.class);
+    
     private JiebaSegmenter segmenter;
     
     @Override
@@ -37,10 +41,12 @@ public class WordSpliter extends BaseBasicBolt{
     @Override
     public void execute(Tuple input, BasicOutputCollector collector) {
         String line = input.getString(0);
-        List<SegToken> tokens = segmenter.process(line, SegMode.INDEX);
+        LOG.info("new line: " + line);
         
+        List<SegToken> tokens = segmenter.process(line, SegMode.INDEX);
         for(SegToken t : tokens){
             String word = t.word.getToken();
+            LOG.info("word: " + word);
             if(word.length() > 1){
                 collector.emit(new Values(word));
             }
