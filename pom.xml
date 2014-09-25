@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mlnotes.storm</groupId>
-    <artifactId>storm_mlnotes</artifactId>
+    <artifactId>hot_words</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>storm_mlnotes</name>
+    <name>hot_words</name>
     <url>http://maven.apache.org</url>
 
     <properties>

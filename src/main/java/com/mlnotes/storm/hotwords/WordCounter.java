@@ -1,4 +1,4 @@
-package com.mlnotes.storm;
+package com.mlnotes.storm.hotwords;
 
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.BasicOutputCollector;

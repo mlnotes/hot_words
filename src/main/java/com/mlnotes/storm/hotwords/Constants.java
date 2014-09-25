@@ -1,4 +1,4 @@
-package com.mlnotes.storm;
+package com.mlnotes.storm.hotwords;
 
 /**
  *
